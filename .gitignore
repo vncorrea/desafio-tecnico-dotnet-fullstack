@@ -1,0 +1,12 @@
+# Build / artefatos
+bin/
+obj/
+# Visual Studio / VS Code
+.vs/
+*.user
+*.suo
+*.userosscache
+# macOS
+.DS_Store
+# Banco local (pode ser recriado)
+Questao5/database.sqlite
