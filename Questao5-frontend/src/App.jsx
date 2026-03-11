@@ -60,6 +60,11 @@ function App() {
     [idContaSaldo],
   );
 
+  const ultimosMovimentosDaContaSelecionada = useMemo(
+    () => ultimosMovimentos.filter((m) => m.contaId === contaSelecionada.id),
+    [ultimosMovimentos, contaSelecionada.id],
+  );
+
   function selecionarConta(contaId) {
     setIdContaMov(contaId);
     setIdContaSaldo(contaId);
@@ -334,36 +339,34 @@ function App() {
               <div className="card-header">
                 <h2>Últimos movimentos</h2>
               </div>
-              {ultimosMovimentos.filter((m) => m.contaId === contaSelecionada.id).length === 0 && (
+              {ultimosMovimentosDaContaSelecionada.length === 0 && (
                 <p className="muted small">
                   Nenhuma movimentação enviada ainda para esta conta.
                 </p>
               )}
-              {ultimosMovimentos.filter((m) => m.contaId === contaSelecionada.id).length > 0 && (
+              {ultimosMovimentosDaContaSelecionada.length > 0 && (
                 <ul className="movement-list">
-                  {ultimosMovimentos
-                    .filter((m) => m.contaId === contaSelecionada.id)
-                    .map((m) => (
-                      <li key={m.idMovimento} className="movement-row">
-                        <div className="movement-left">
-                          <span className={`chip chip-${m.tipo === 'C' ? 'credit' : 'debit'}`}>
-                            {m.tipo === 'C' ? 'Crédito' : 'Débito'}
-                          </span>
-                          <span className="movement-time">
-                            {new Date(m.data).toLocaleTimeString('pt-BR')}
-                          </span>
-                        </div>
-                        <div className="movement-right">
-                          <span className="movement-value">
-                            {m.valor.toLocaleString('pt-BR', {
-                              style: 'currency',
-                              currency: 'BRL',
-                            })}
-                          </span>
-                          <span className="movement-id">#{m.idMovimento.slice(0, 8)}</span>
-                        </div>
-                      </li>
-                    ))}
+                  {ultimosMovimentosDaContaSelecionada.map((m) => (
+                    <li key={m.idMovimento} className="movement-row">
+                      <div className="movement-left">
+                        <span className={`chip chip-${m.tipo === 'C' ? 'credit' : 'debit'}`}>
+                          {m.tipo === 'C' ? 'Crédito' : 'Débito'}
+                        </span>
+                        <span className="movement-time">
+                          {new Date(m.data).toLocaleTimeString('pt-BR')}
+                        </span>
+                      </div>
+                      <div className="movement-right">
+                        <span className="movement-value">
+                          {m.valor.toLocaleString('pt-BR', {
+                            style: 'currency',
+                            currency: 'BRL',
+                          })}
+                        </span>
+                        <span className="movement-id">#{m.idMovimento.slice(0, 8)}</span>
+                      </div>
+                    </li>
+                  ))}
                 </ul>
               )}
             </div>
@@ -591,12 +594,6 @@ function App() {
               <div className="card-header">
                 <h2>Relatórios</h2>
               </div>
-              <p className="muted small">
-                Resumo baseado nos lançamentos carregados via API para a conta selecionada.
-              </p>
-              <p className="muted small">
-                SALDO = SOMA_CREDITOS - SOMA_DEBITOS
-              </p>
 
               {movimentosCarregados.length === 0 && (
                 <p className="muted small">
