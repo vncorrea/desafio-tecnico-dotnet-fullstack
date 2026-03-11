@@ -14,7 +14,7 @@ builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(policy =>
     {
-        policy.WithOrigins("http://localhost:5173", "https://localhost:5173")
+        policy.WithOrigins("http://localhost:5173", "https://localhost:5173", "http://localhost:5000", "https://localhost:5000")
               .AllowAnyHeader()
               .AllowAnyMethod();
     });
@@ -56,7 +56,7 @@ app.Services.GetService<IDatabaseBootstrap>().Setup();
 
 app.Run();
 
-// Informações úteis:
+// Informaï¿½ï¿½es ï¿½teis:
 // Tipos do Sqlite - https://www.sqlite.org/datatype3.html
 
 

@@ -56,7 +56,7 @@ dotnet run
 
 API REST para conta corrente (consulta de saldo, movimentações, etc.), com persistência em **SQLite** e documentação **Swagger**.
 
-- **Swagger UI:** após subir a API, acesse `https://localhost:<porta>/swagger` (ou a URL exibida no terminal). No `launchSettings.json` o perfil `Questao5` está configurado para `http://localhost:5189`.
+- **Swagger UI:** após subir a API, acesse `https://localhost:<porta>/swagger` (ou a URL exibida no terminal). No `launchSettings.json` o perfil `Questao5` está configurado para `http://localhost:5000`.
 - Banco: arquivo `database.sqlite` criado na pasta do projeto (configurável em `appsettings.json`).
 
 **Bibliotecas (principalmente Questao5):**
@@ -85,7 +85,7 @@ npm run dev
 
 Depois acesse `http://localhost:5173` no navegador.
 
-No topo da página há um campo **“Base URL da API”**, que por padrão vem como `http://localhost:5189`.
+No topo da página há um campo **“Base URL da API”**, que por padrão vem como `http://localhost:5000`.
 
 Para facilitar os testes, o frontend já sugere um dos GUIDs de conta cadastrados pelo script de bootstrap:
 

@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 
-const DEFAULT_API_BASE = 'http://localhost:5189';
+const DEFAULT_API_BASE = 'http://localhost:5000';
 
 const KNOWN_ACCOUNTS = [
   {
@@ -255,7 +255,7 @@ function App() {
               className="input"
               value={apiBase}
               onChange={(e) => setApiBase(e.target.value)}
-              placeholder="http://localhost:5189"
+              placeholder="http://localhost:5000"
             />
             <p className="muted small">
               Aponte para a API da Questão 5 em execução (confira em <code>launchSettings.json</code>{' '}
