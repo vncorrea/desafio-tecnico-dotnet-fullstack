@@ -9,6 +9,16 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllers();
 
+// CORS para permitir o frontend React em localhost:5173
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(policy =>
+    {
+        policy.WithOrigins("http://localhost:5173", "https://localhost:5173")
+              .AllowAnyHeader()
+              .AllowAnyMethod();
+    });
+});
 
 // sqlite
 builder.Services.AddSingleton(new DatabaseConfig { Name = builder.Configuration.GetValue<string>("DatabaseName", "Data Source=database.sqlite") });
@@ -28,7 +38,12 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
+// Em desenvolvimento n?o vamos redirecionar HTTP -> HTTPS para evitar
+// problemas de CORS com redirects nos testes via frontend.
+// app.UseHttpsRedirection();
+
+// Habilita CORS antes da autoriza??o / mapeamento de endpoints
+app.UseCors();
 
 app.UseAuthorization();
 

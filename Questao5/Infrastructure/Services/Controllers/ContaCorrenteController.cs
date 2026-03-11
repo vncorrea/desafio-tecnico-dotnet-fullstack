@@ -116,5 +116,45 @@ namespace Questao5.Infrastructure.Services.Controllers
                 Saldo = Math.Round(saldo, 2)
             });
         }
+
+        /// <summary>
+        /// Lista os movimentos lançados em uma conta corrente.
+        /// </summary>
+        /// <param name="idContaCorrente">Identificação (GUID) da conta corrente.</param>
+        /// <returns>200 com a lista de movimentos (créditos e débitos) ou 400 se conta inválida ou inativa.</returns>
+        [HttpGet("{idContaCorrente}/movimentos")]
+        [ProducesResponseType(typeof(IEnumerable<MovimentoDetalheResponse>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ErroResponse), StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> Movimentos([FromRoute] string idContaCorrente, CancellationToken cancellationToken)
+        {
+            var id = idContaCorrente?.Trim();
+            if (string.IsNullOrEmpty(id))
+            {
+                return BadRequest(new ErroResponse { Tipo = "INVALID_ACCOUNT", Mensagem = "Identificação da conta corrente é obrigatória." });
+            }
+
+            var conta = await _repository.ObterPorIdAsync(id, cancellationToken);
+            if (conta == null)
+            {
+                return BadRequest(new ErroResponse { Tipo = "INVALID_ACCOUNT", Mensagem = "Conta corrente não cadastrada." });
+            }
+
+            if (conta.Ativo != 1)
+            {
+                return BadRequest(new ErroResponse { Tipo = "INACTIVE_ACCOUNT", Mensagem = "Conta corrente inativa. Apenas contas ativas podem consultar lançamentos." });
+            }
+
+            var movimentos = await _repository.ObterMovimentosPorContaAsync(id, cancellationToken);
+
+            var resposta = movimentos.Select(m => new MovimentoDetalheResponse
+            {
+                IdMovimento = m.IdMovimento,
+                DataMovimento = m.DataMovimento,
+                TipoMovimento = m.TipoMovimento,
+                Valor = m.Valor
+            });
+
+            return Ok(resposta);
+        }
     }
 }

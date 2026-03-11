@@ -38,5 +38,21 @@ namespace Questao5.Infrastructure.Sqlite
             var saldo = await connection.ExecuteScalarAsync<decimal>(new CommandDefinition(sql, new { Id = idContaCorrente }, cancellationToken: cancellationToken));
             return saldo;
         }
+
+        public async Task<IEnumerable<Movimento>> ObterMovimentosPorContaAsync(string idContaCorrente, CancellationToken cancellationToken = default)
+        {
+            await using var connection = new SqliteConnection(_config.Name);
+            var sql = @"select 
+                            idmovimento as IdMovimento,
+                            idcontacorrente as IdContaCorrente,
+                            datamovimento as DataMovimento,
+                            tipomovimento as TipoMovimento,
+                            valor as Valor
+                        from movimento
+                        where idcontacorrente = @Id
+                        order by datetime(datamovimento) desc";
+
+            return await connection.QueryAsync<Movimento>(new CommandDefinition(sql, new { Id = idContaCorrente }, cancellationToken: cancellationToken));
+        }
     }
 }

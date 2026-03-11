@@ -45,7 +45,9 @@ Consome a API [HackerRank Football Matches](https://jsonmock.hackerrank.com/api/
 
 Respostas descritivas e/ou artefatos conforme o enunciado em cada pasta (arquivos Word).
 
-### Questão 5 — API Web (Conta Corrente)
+### Questão 5 — API Web (Conta Corrente) + Frontend React
+
+#### Backend (.NET API)
 
 ```bash
 cd Questao5
@@ -54,10 +56,10 @@ dotnet run
 
 API REST para conta corrente (consulta de saldo, movimentações, etc.), com persistência em **SQLite** e documentação **Swagger**.
 
-- **Swagger UI:** após subir a API, acesse `https://localhost:<porta>/swagger` (ou a URL exibida no terminal).
+- **Swagger UI:** após subir a API, acesse `https://localhost:<porta>/swagger` (ou a URL exibida no terminal). No `launchSettings.json` o perfil `Questao5` está configurado para `http://localhost:5189`.
 - Banco: arquivo `database.sqlite` criado na pasta do projeto (configurável em `appsettings.json`).
 
-**Bibliotecas:**
+**Bibliotecas (principalmente Questao5):**
 
 - **Swashbuckle.AspNetCore** — Swagger/OpenAPI
 - **Dapper** — acesso a dados (SQLite)
@@ -65,6 +67,30 @@ API REST para conta corrente (consulta de saldo, movimentações, etc.), com per
 - **FluentAssertions** — assertions em testes (se houver)
 
 Estrutura do projeto Questao5: `Domain/Entities`, `Infrastructure/Sqlite`, `Infrastructure/Services/Controllers`, `Models`.
+
+#### Frontend (React + Vite) para testar a API
+
+O frontend da Questão 5 está na pasta `questao5-frontend`. Ele permite:
+
+- Enviar movimentações (`POST /api/ContaCorrente/movimentacao`) e ver o `idMovimento` ou o erro detalhado (`tipo`, `mensagem`).
+- Consultar o saldo (`GET /api/ContaCorrente/{idContaCorrente}/saldo`) e exibir número da conta, titular, data/hora e saldo formatado, além do JSON bruto da resposta.
+
+**Passos para rodar o frontend:**
+
+```bash
+cd questao5-frontend
+npm install
+npm run dev
+```
+
+Depois acesse `http://localhost:5173` no navegador.
+
+No topo da página há um campo **“Base URL da API”**, que por padrão vem como `http://localhost:5189`.
+
+Para facilitar os testes, o frontend já sugere um dos GUIDs de conta cadastrados pelo script de bootstrap:
+
+- Ativas (podem movimentar e consultar saldo): `B6BAFC09-6967-ED11-A567-055DFA4A16C9`, `FA99D033-7067-ED11-96C6-7C5DFA4A16C9`, `382D323D-7067-ED11-8866-7D5DFA4A16C9`.
+- Inativas (úteis para testar erros `INACTIVE_ACCOUNT`): `F475F943-7067-ED11-A06B-7E5DFA4A16C9`, `BCDACA4A-7067-ED11-AF81-825DFA4A16C9`, `D2E02051-7067-ED11-94C0-835DFA4A16C9`.
 
 ## Observações
 

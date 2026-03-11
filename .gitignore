@@ -10,3 +10,7 @@ obj/
 .DS_Store
 # Banco local (pode ser recriado)
 Questao5/database.sqlite
+
+# Frontend Questão 5 (React/Vite)
+questao5-frontend/node_modules/
+questao5-frontend/dist/
